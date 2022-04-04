@@ -1,0 +1,5 @@
+CREATE KEYSPACE event_sourcing WITH replication = {'class': 'NetworkTopologyStrategy', 'replication_factor' : 3};
+
+CREATE TABLE event_store (bounded_context varchar, aggregate_id uuid, aggregate_type varchar, event_id uuid, event_type varchar, event_version int, event_data varchar, event_timestamp timestamp, event_metadata varchar, PRIMARY KEY ((bounded_context, aggregate_id, aggregate_type), event_version));
+
+CREATE TABLE aggregate_snapshot (bounded_context varchar, aggregate_id uuid, aggregate_type varchar, snapshot_data varchar, snapshot_version int, snapshot_timestamp timestamp, snapshot_metadata varchar, PRIMARY KEY ((bounded_context, aggregate_id, aggregate_type))) WITH compaction = { 'class' : 'LeveledCompactionStrategy' };
